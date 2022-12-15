@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+    <link rel="stylesheet" href="pagedes.css"/>
+    <title>Resume</title>
+    <style>
+    .res{
+      background-color: bisque;
+    }
+    #mhb {
+        background-image: url("bgm.jpg");
+    }
+    
+    #mh {
+        color: crimson;
+        margin-left: 100px;
+        padding: 50px;
+    }
+    
+    .module {
+        background-color: rgb(27, 39, 42);
+        padding: 50px;
+    }
+    
+    .pll {
+        padding: 50px;
+        background-color: rgb(27, 0, 46);
+        color: cornsilk;
+    }
+    
+    .adl {
+        padding: 50px;
+        background-color: rgb(27, 27, 73);
+        color: cornsilk;
+    }</style>
+    
+</head>
+<body class="res">
+  <nav class="navbar navbar-inverse">
+    <div class="container-fluid">
+       <div class="navbar-header">
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#myNavbar">
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+              </button>
+            <a class="navbar-brand" href="main.html" style="font-style: cursive ;">Sky Tech</a>
+        </div>
+        <div class="collapse navbar-collapse" id="myNavbar">
+          <ul class="nav navbar-nav">
+
+             <li class="active"><a href="main.html">HOME</a></li>
+
+             <li class="dropdown">
+                 <a class="dropdown-toggle" data-toggle="dropdown" href="#">Courses
+                 <span class="caret"></span></a>
+
+                  <ul class="dropdown-menu">
+                     <li><a href="#">Web Development</a></li>
+                     <li><a href="#">C++</a></li>
+                     <li><a href="#">Data Structures and Algorithms</a></li>
+                  </ul>  
+              </li>
+
+              <li><a href="index.html">Resume Generator</a></li>
+
+              <li><a href="#">About</a></li>
+              <li><a href="#">Contact</a></li>
+          </ul>
+          
+         <ul class="nav navbar-nav navbar-right">
+
+             <form class="navbar-form navbar-left" action="">
+                 <div class="input-group">
+                   <input type="text" class="form-control" placeholder="Search">
+                   <div class="input-group-btn">
+                     <button class="btn btn-default" type="submit">
+                       <i class="glyphicon glyphicon-search"></i>
+                     </button>
+                   </div>
+                 </div>
+             </form>
+
+             <li><a href="register.php"><span class="glyphicon glyphicon-user"></span> Sign Up</a></li>
+             <li><a href="login.php"><span class="glyphicon glyphicon-log-in"></span> Login</a></li>
+          </ul>
+        </div>    
+    </div>
+
+</nav>
+
+    <form class="input-fields">
+          <h1 style="text-align: center;">Resume Generator</h1>
+          <input type="text" name="name" placeholder="name" />
+          <input type="text" name="title" placeholder="Title eg web developer" />
+          <textarea name="workexp" placeholder="work experience"></textarea>
+          <textarea name="academics" placeholder="academic details"></textarea>
+          <input name="objective" placeholder="objective" />
+          <textarea name="skills" placeholder="skills" ></textarea>
+          <textarea name="projects" placeholder="projects" ></textarea>
+          <textarea name="achievements" placeholder="achievements" ></textarea>
+          <textarea name="contact" placeholder="contact" ></textarea>
+    </form>
+     <!-- resume preview -->
+    <div class="output">
+   
+    </div>  
+    <!-- button for toggle   -->
+   <div class="btn">
+        <button onclick="toggle()">Preview or edit</button>
+   </div>
+   <script src="https://cdn.ckeditor.com/ckeditor5/27.1.0/classic/ckeditor.js"></script>
+    <script>
+        
+const inputfields = document.querySelector('.input-fields')
+const output = document.querySelector('.output')
+
+let inputShow = true
+
+
+async function TextEditor(element){
+  const newEditor =  await ClassicEditor
+  .create(element,{
+    toolbar: [ 'heading', 'bold', 'italic', 'bulletedList', 'numberedList', 'blockQuote' ],
+  } )
+  return newEditor
+ 
+}
+
+let workExpdetails;
+TextEditor(inputfields["workexp"]).then(nEditor=>{
+  workExpdetails = nEditor
+})
+let Academic;
+TextEditor(inputfields["academics"]).then(nEditor=>{
+  Academic = nEditor
+})
+
+
+
+function toggle(){
+    if(inputShow){
+         inputfields.style.display = "none"
+         inputShow = false 
+         output.innerHTML=`
+           <div class="hero">
+            <h1>${inputfields["name"].value}</h1>
+            <h3>${inputfields["title"].value}</h3>
+           </div>
+           <div class="main">
+               <div>
+                 <h2>OBJECTIVE</h2>
+                 <p>${inputfields["objective"].value}</p>
+                 <h2>SKILLS</h2>
+                 <p>${inputfields["skills"].value}</p>
+                 <h2>ACHIEVEMENTS</h2>
+                 <p>${inputfields["achievements"].value}</p>
+                 <h2>CONTACT</h2>
+                 <p>${inputfields["contact"].value}</p>
+               </div>
+               <div>
+                <h2>WORK EXPERIENCE</h2>
+                ${workExpdetails.getData()}
+                <h2>ACEMEDIC DETAILS</h2>
+                 ${Academic.getData()}
+                <h2>PROJECTS</h2>
+                <p>${inputfields["projects"].value}</p>
+               </div>
+           </div>
+           <div class="btn">
+              <button onclick="print()">Print Resume</button>
+        </div>
+         `
+    }else{
+        inputfields.style.display =  "block"
+        inputShow = true
+        output.innerHTML=""
+    }
+}
+    </script>
+</body>
+</html>
